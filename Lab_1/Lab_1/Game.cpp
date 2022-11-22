@@ -284,11 +284,11 @@ void Game::TurnInfo()
 
 	if (turnData.turnDeaths > 0 || turnData.newCitizens > 0)
 	{
-		std::cout << "\t" << turnData.turnDeaths << citizens1 << turnData.newCitizens << citizens2 << std::endl;
+		std::cout << "\t" << turnData.turnDeaths << citizens1 << turnData.newCitizens << citizens2;
 	}
 	if(turnData.isPlague)
 	{
-		std::cout << "\t" << plague << std::endl;
+		std::cout << "\t" << plague;
 	}
 
 	std::cout << "\t" << weathIncome1 << turnData.weathIncome << weathIncome2 << turnData.weathPerAcre << weathIncome3;
