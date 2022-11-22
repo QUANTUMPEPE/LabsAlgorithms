@@ -54,13 +54,14 @@ void Game::StartGame()
 
 	if(!input)
 	{
+		gameState = GameData();
 		LoadGame();
-		TurnHandle();
+		GameCycleHandle();
 	}
 	else
 	{
 		gameState = GameData();
-		TurnHandle();
+		GameCycleHandle();
 	}
 }
 
@@ -109,58 +110,57 @@ bool Game::LoadGame()
 	return true;
 }
 
-void Game::TurnHandle()
+void Game::GameCycleHandle()
 {
-	if(gameState.year > 10) 
+	while (gameState.year <= 10)
 	{
-		GameResults();
-		return;
+		gameState.acrePrice = RandRange(17, 26);
+		TurnInfo();
+
+		std::cout << saveGame;
+		if (UserInput<bool>(false))
+		{
+			SaveGame();
+		}
+
+		turnData = TurnData();
+
+		int toBuy = 0;
+		int toSell = 0;
+		int toEat = 0;
+		int toSow = 0;
+
+		int weathTemp = gameState.weath;
+		int landsTemp = gameState.lands;
+
+		while (!UserTurnInputHandle(toBuy, toSell, toEat, toSow, weathTemp, landsTemp))
+		{
+			toBuy = 0;
+			toSell = 0;
+			toEat = 0;
+			toSow = 0;
+			weathTemp = gameState.weath;
+			landsTemp = gameState.lands;
+		};
+
+		SowHandle(weathTemp, toSow);
+		RatsHandle(weathTemp);
+		HungerHandle(weathTemp, toEat);
+		if (turnData.isGameOver)
+		{
+			return;
+		}
+		CitizensIncomeHandle();
+		PlagueHandle();
+
+		gameState.weath = weathTemp;
+		gameState.lands = landsTemp;
+
+		++gameState.year;
 	}
-	gameState.acrePrice = RandRange(17, 26);
-	TurnInfo();
 
-	std::cout << saveGame;
-	if (UserInput<bool>(false))
-	{
-		SaveGame();
-	}
-
-	turnData = TurnData();
-
-	int toBuy = 0;
-	int toSell = 0;
-	int toEat = 0;
-	int toSow = 0;
-
-	int weathTemp = gameState.weath;
-	int landsTemp = gameState.lands;
-
-	while (!UserTurnInputHandle(toBuy, toSell, toEat, toSow, weathTemp, landsTemp))
-	{
-		toBuy = 0;
-		toSell = 0;
-		toEat = 0;
-		toSow = 0;
-		weathTemp = gameState.weath;
-		landsTemp = gameState.lands;
-	};
-
-	SowHandle(weathTemp, toSow);
-	RatsHandle(weathTemp);
-	HungerHandle(weathTemp, toEat);
-	if(turnData.isGameOver)
-	{
-		return;
-	}
-	CitizensIncomeHandle();
-	PlagueHandle();
-
-	gameState.weath = weathTemp;
-	gameState.lands = landsTemp;
-
-	++gameState.year;
-
-	TurnHandle();
+	GameResults();
+	return;
 }
 
 void Game::SowHandle(int& weathTemp, int toSow)
@@ -178,9 +178,9 @@ void Game::RatsHandle(int& weathTemp)
 
 void Game::HungerHandle(int& weathTemp, int toEat)
 {
-	if (toEat - gameState.citizens * CITIZEN_MAINTENANCE < 0)
+	if (toEat - gameState.citizens * kCitizenMaintenance < 0)
 	{
-		int hungeryCitizens = -static_cast<int>(std::ceil(toEat / CITIZEN_MAINTENANCE - gameState.citizens));
+		int hungeryCitizens = -static_cast<int>(std::ceil(toEat / kCitizenMaintenance - gameState.citizens));
 		const float deathRate = static_cast<float>(hungeryCitizens) / static_cast<float>(gameState.citizens);
 		if (deathRate > 0.45f)
 		{
@@ -202,7 +202,7 @@ void Game::CitizensIncomeHandle()
 
 void Game::PlagueHandle()
 {
-	if (RandRange(0.f, 1.f) <= PLAGUE_CHANCE)
+	if (RandRange(0.f, 1.f) <= kPlagueChance)
 	{
 		gameState.deaths += gameState.citizens / 2;
 		gameState.citizens /= 2;
@@ -259,14 +259,14 @@ bool Game::UserTurnInputHandle(int& toBuy, int& toSell, int& toEat, int& toSow, 
 
 	std::cout << sow << std::endl;
 	toSow = UserInput<int>(true, 0, INT_MAX);
-	if (weathAfterInput < static_cast<int>(toSow * SOW_MAINTENANCE) || gameState.citizens * CITIZEN_PRODUCTIVITY < toSow || toSow > landsAfterInput)
+	if (weathAfterInput < static_cast<int>(toSow * kSowMaintenance) || gameState.citizens * kCitizenProductivity < toSow || toSow > landsAfterInput)
 	{
 		PrintWarningMessage();
 		return false;
 	}
 	else
 	{
-		weathAfterInput -= static_cast<int>(toSow * SOW_MAINTENANCE);
+		weathAfterInput -= static_cast<int>(toSow * kSowMaintenance);
 	}
 
 	return true;

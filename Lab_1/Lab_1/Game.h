@@ -4,10 +4,10 @@
 #include <algorithm>
 
 
-#define CITIZEN_PRODUCTIVITY 10
-#define CITIZEN_MAINTENANCE 20
-#define SOW_MAINTENANCE 0.5
-#define PLAGUE_CHANCE 0.15f
+constexpr int kCitizenProductivity = 10;
+constexpr int kCitizenMaintenance = 20;
+constexpr double kSowMaintenance = 0.5;
+constexpr float kPlagueChance = 0.15f;
 
 struct GameData
 {
@@ -53,7 +53,7 @@ private:
 	bool SaveGame();
 	bool LoadGame();
 
-	void TurnHandle();
+	void GameCycleHandle();
 	bool UserTurnInputHandle(int& toBuy, int& toSell, int& toEat, int& toSow, int& weathAfterInput, int& landsAfterInput);
 	void PrintWarningMessage();
 	void TurnInfo();

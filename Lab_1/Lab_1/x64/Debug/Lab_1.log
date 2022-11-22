@@ -1,5 +1,1 @@
-﻿  Game.cpp
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_1\Lab_1\Game.cpp(305,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_1\Lab_1\Game.cpp(306,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_1\Lab_1\Game.cpp(336,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Lab_1.vcxproj -> P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_1\x64\Debug\Lab_1.exe
+﻿  Lab_1.vcxproj -> P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_1\x64\Debug\Lab_1.exe
