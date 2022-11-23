@@ -40,8 +40,9 @@ public:
 	int insert(int index, const T& value);
 	void remove(int index);
 	int size() const;
+	int getCapcaity() const { return capacity_; }
 	Iterator iterator() { return Iterator(this, data_, false); }
-	Iterator reverceIterator() { return Iterator(this, data_ + size_ - 1, true); }
+	Iterator reverseIterator() { return Iterator(this, data_ + size_ - 1, true); }
 
 	const T& operator[](int index) const;
 	T& operator[](int index);
@@ -86,6 +87,7 @@ inline DynamicArray<T>::DynamicArray(DynamicArray& other)
 		new (data_ + i) T(other.data_[i]);
 }
 
+// Should other be usable after move?
 template<typename T>
 inline DynamicArray<T>::DynamicArray(DynamicArray&& other) noexcept
 {
@@ -179,14 +181,14 @@ inline void DynamicArray<T>::expand()
 template <typename T>
 inline T& DynamicArray<T>::operator[](int index)
 {
-	if(index < 0 || index >= size_) throw "Index out of bounds\n";
+	if(index < 0 || index >= size_) throw std::out_of_range("Index out of bounds");
 	return *(data_ + index);
 }
 
 template <typename T>
 inline const T& DynamicArray<T>::operator[](int index) const
 {
-	if (index < 0 || index >= size_) throw "Index out of bounds\n";
+	if (index < 0 || index >= size_) throw std::out_of_range("Index out of bounds");
 	return *(data_ + index);
 }
 

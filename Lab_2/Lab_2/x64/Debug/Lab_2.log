@@ -1,6 +1,6 @@
 ﻿  Lab_2.cpp
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(118,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(112): message : while compiling class template member function 'int DynamicArray<int>::insert(const T &)'
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(120,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(114): message : while compiling class template member function 'int DynamicArray<int>::insert(const T &)'
           with
           [
               T=int
@@ -11,7 +11,7 @@ P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorith
               T=int
           ]
 P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\Lab_2.cpp(9): message : see reference to class template instantiation 'DynamicArray<int>' being compiled
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(157,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(156): message : while compiling class template member function 'int DynamicArray<int>::size(void) const'
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\Lab_2.cpp(14): message : see reference to function template instantiation 'int DynamicArray<int>::size(void) const' being compiled
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(159,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(158): message : while compiling class template member function 'int DynamicArray<int>::size(void) const'
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\Lab_2.cpp(18): message : see reference to function template instantiation 'int DynamicArray<int>::size(void) const' being compiled
   Lab_2.vcxproj -> P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\x64\Debug\Lab_2.exe

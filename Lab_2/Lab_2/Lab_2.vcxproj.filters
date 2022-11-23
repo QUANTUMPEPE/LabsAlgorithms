@@ -18,9 +18,6 @@
     <ClCompile Include="Lab_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicArray.h">

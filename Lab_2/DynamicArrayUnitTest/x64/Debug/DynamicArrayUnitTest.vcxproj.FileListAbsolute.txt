@@ -1,0 +1,1 @@
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\DynamicArrayUnitTest\x64\Debug\DynamicArrayUnitTest.vcxproj.CopyComplete

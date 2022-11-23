@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DynamicArray.cpp" />
     <ClCompile Include="Lab_2.cpp" />
   </ItemGroup>
   <ItemGroup>
