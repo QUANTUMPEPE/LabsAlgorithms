@@ -52,17 +52,12 @@ void Game::StartGame()
 	std::cout << messages::loadGame;
 	int input = UserInput<bool>(false);
 
-	if(!input)
-	{
-		gameState = GameData();
-		LoadGame();
-		GameCycleHandle();
-	}
-	else
-	{
-		gameState = GameData();
-		GameCycleHandle();
-	}
+	gameState = GameData();
+	turnData = TurnData();
+
+	if(!input) LoadGame();
+
+	GameCycleHandle();
 }
 
 bool Game::SaveGame()
@@ -112,7 +107,7 @@ bool Game::LoadGame()
 
 void Game::GameCycleHandle()
 {
-	while (gameState.year <= 10)
+	while (gameState.year < 10)
 	{
 		gameState.acrePrice = RandRange(17, 26);
 		TurnInfo();
@@ -159,6 +154,7 @@ void Game::GameCycleHandle()
 		++gameState.year;
 	}
 
+	TurnInfo();
 	GameResults();
 	return;
 }
@@ -180,16 +176,16 @@ void Game::HungerHandle(int& weathTemp, int toEat)
 {
 	if (toEat - gameState.citizens * kCitizenMaintenance < 0)
 	{
-		int hungeryCitizens = -static_cast<int>(std::ceil(toEat / kCitizenMaintenance - gameState.citizens));
-		const float deathRate = static_cast<float>(hungeryCitizens) / static_cast<float>(gameState.citizens);
+		int hungryCitizens = -static_cast<int>(std::ceil(toEat / kCitizenMaintenance - gameState.citizens));
+		const float deathRate = static_cast<float>(hungryCitizens) / static_cast<float>(gameState.citizens);
 		if (deathRate > 0.45f)
 		{
 			GameOver();
 			return;
 		}
-		gameState.citizens -= hungeryCitizens;
-		gameState.deaths += hungeryCitizens;
-		turnData.turnDeaths = hungeryCitizens;
+		gameState.citizens -= hungryCitizens;
+		gameState.deaths += hungryCitizens;
+		turnData.turnDeaths = hungryCitizens;
 	}
 }
 
@@ -202,7 +198,8 @@ void Game::CitizensIncomeHandle()
 
 void Game::PlagueHandle()
 {
-	if (RandRange(0.f, 1.f) <= kPlagueChance)
+	float plague = RandRange(0.f, 1.f);
+	if (plague < kPlagueChance)
 	{
 		gameState.deaths += gameState.citizens / 2;
 		gameState.citizens /= 2;
@@ -301,8 +298,8 @@ void Game::TurnInfo()
 
 void Game::GameResults()
 {
-	float P = gameState.deaths / (gameState.deaths + gameState.citizens);
-	float L = gameState.lands / gameState.citizens;
+	float P = static_cast<float>(gameState.deaths) / (gameState.deaths + gameState.citizens);
+	float L = static_cast<float>(gameState.lands) / gameState.citizens;
 
 	if( P > 0.33 && L < 7)
 	std::cout << badEnding << std::endl;

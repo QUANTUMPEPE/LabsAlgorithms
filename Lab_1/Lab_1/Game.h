@@ -3,11 +3,10 @@
 #include <random>
 #include <algorithm>
 
-
 constexpr int kCitizenProductivity = 10;
 constexpr int kCitizenMaintenance = 20;
 constexpr double kSowMaintenance = 0.5;
-constexpr float kPlagueChance = 0.15f;
+constexpr float kPlagueChance = .15f;
 
 struct GameData
 {
