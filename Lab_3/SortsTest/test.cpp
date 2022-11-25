@@ -14,9 +14,50 @@ int RandRange(int min, int max)
 	return dist(gen);
 }
 
-TEST(QuickSortTest, SortTest) 
+class EqualityTests : public testing::Test
 {
-	int* array = new int [100000];
+protected:
+	template<typename T, typename Compare>
+	void EqualityTest(T* arraySample, size_t size, Compare comp)
+	{
+		T* quickSort = new T[size];
+		T* insertSort = new T[size];
+		T* standartSort = new T[size];
+
+		for (size_t i = 0; i < size; ++i)
+		{
+			quickSort[i] = arraySample[i];
+			insertSort[i] = arraySample[i];
+			standartSort[i] = arraySample[i];
+		}
+
+		Sorts::insertions(insertSort, (insertSort + size - 1), comp);
+		Sorts::quick(quickSort, (quickSort + size - 1), comp, true);
+		std::sort(standartSort, standartSort + size, comp);
+
+		for (size_t i = 0; i < size; ++i)
+		{		
+			EXPECT_EQ(standartSort[i], quickSort[i]);
+			EXPECT_EQ(insertSort[i], quickSort[i]);
+		}
+
+		delete [] quickSort;
+		delete [] insertSort;
+		delete [] standartSort;
+	}
+};
+
+#pragma region QuickSort
+TEST(QuickSortTest, OneItem)
+{
+	int* array = new int{1};
+	Sorts::quick(array, array, [](int a, int b) { return a < b; }, true);
+	EXPECT_EQ(*array, 1);
+}
+
+TEST(QuickSortTest, SortTest)
+{
+	int* array = new int[100000];
 	for (int i = 0; i < 100000; ++i)
 	{
 		array[i] = RandRange(INT_MIN, INT_MAX);
@@ -25,8 +66,17 @@ TEST(QuickSortTest, SortTest)
 
 	for (int i = 1; i < 100000; ++i)
 	{
-		EXPECT_TRUE(array[i-1] <= array[i]);
-	}	
+		EXPECT_TRUE(array[i - 1] <= array[i]);
+	}
+}
+#pragma endregion QuickSort
+
+#pragma region InsertSort
+TEST(InsertSortTest, OneItem)
+{
+	int* array = new int{ 1 };
+	Sorts::insertions(array, array, [](int a, int b) { return a < b; });
+	EXPECT_EQ(*array, 1);
 }
 
 TEST(InsertSortTest, SortTest)
@@ -43,8 +93,30 @@ TEST(InsertSortTest, SortTest)
 		EXPECT_TRUE(array[i - 1] <= array[i]);
 	}
 }
+#pragma endregion InsertSort
 
-TEST(CompareTest, TimeAndEqualityTestOptimized)
+#pragma region GeneralTests
+TEST_F(EqualityTests, SortsEqualityResultTest)
+{
+	const size_t size = 100;
+	const int repeats = 1000;
+	int defaultTypeSample[size];
+	std::string stringTypeSample[size];
+
+	for (size_t j = 0; j < repeats; ++j)
+	{
+		for (size_t i = 0; i < size; ++i)
+		{
+			defaultTypeSample[i] = RandRange(INT_MIN, INT_MAX);
+			stringTypeSample[i] = std::to_string(defaultTypeSample[i]);
+		}
+
+		EqualityTest(defaultTypeSample, size, [](int a, int b) { return a < b; });
+		EqualityTest(stringTypeSample, size, [](std::string a, std::string b) { return a < b; });
+	}
+}
+
+TEST(CompareTest, PerformanceAndEqualityTest)
 {
 	int testSize = 512;
 	int repeats = 10000;
@@ -68,14 +140,6 @@ TEST(CompareTest, TimeAndEqualityTestOptimized)
 		ns quickSortTime = std::chrono::nanoseconds(0);
 		ns insertSortTime = std::chrono::nanoseconds(0);
 
-		/*LARGE_INTEGER quickSortTime;
-		quickSortTime.QuadPart = 0;
-		LARGE_INTEGER insertSortTime;
-		insertSortTime.QuadPart = 0;
-
-		LARGE_INTEGER frequency;
-		QueryPerformanceFrequency(&frequency);*/
-
 		std::cout << "Step = " << i << " in " << testSize << std::endl;
 		for (int k = 0; k < repeats; ++k)
 		{
@@ -83,7 +147,7 @@ TEST(CompareTest, TimeAndEqualityTestOptimized)
 			int* arrayB{ new int[i] };
 			for (int j = 0; j < i; ++j)
 			{
-				if(worstCase)
+				if (worstCase)
 				{
 					arrayA[j] = i - j;
 					arrayB[j] = RandRange(INT_MIN, INT_MAX);
@@ -100,35 +164,17 @@ TEST(CompareTest, TimeAndEqualityTestOptimized)
 			TimeType endInsretTime;
 			TimeType endQuickTime;
 
-			/*LARGE_INTEGER startInsretTime;
-			LARGE_INTEGER startQuickTime;
-			LARGE_INTEGER endInsretTime;
-			LARGE_INTEGER endQuickTime;
-			*/
-
 			startInsretTime = Time::now();
-			//QueryPerformanceCounter(&startInsretTime);
 			Sorts::insertions(arrayA, arrayA + i - 1, [](int a, int b) { return a < b; });
-			//QueryPerformanceCounter(&endInsretTime);
 			endInsretTime = Time::now();
 
 			startQuickTime = Time::now();
-			//QueryPerformanceCounter(&startQuickTime);
 			Sorts::quick(arrayB, arrayB + i - 1, [](int a, int b) { return a < b; }, true);
-			//QueryPerformanceCounter(&endQuickTime);
 			endQuickTime = Time::now();
 
 			quickSortTime += (endQuickTime - startQuickTime);
-			insertSortTime += (endInsretTime- startInsretTime);
+			insertSortTime += (endInsretTime - startInsretTime);
 
-			if(!worstCase)
-			{
-				for (int j = 0; j < i; ++j)
-				{
-					EXPECT_EQ(arrayA[j], arrayB[j]);
-				}
-			}
-			
 			delete[] arrayA;
 			delete[] arrayB;
 		}
@@ -136,18 +182,14 @@ TEST(CompareTest, TimeAndEqualityTestOptimized)
 		quickSortTime /= repeats;
 		insertSortTime /= repeats;
 
-		//std::cout << "Insertions sort time = " << ((float)insertSortTime.QuadPart / frequency.QuadPart)*1000 << std::endl;
 		std::cout << "Insertions sort time = " << insertSortTime.count() << std::endl;
-		//std::cout << "Quick sort time = " << ((float)quickSortTime.QuadPart / frequency.QuadPart)*1000 << std::endl;
 		std::cout << "Quick sort time = " << quickSortTime.count() << std::endl;
 
 		std::cout << "_____________________________________________" << std::endl;
 
 		os << i << "\t";
 		os << insertSortTime.count() << "\t";
-		//os << insertSortTime.QuadPart << "\t";
 		os << quickSortTime.count() << std::endl;
-		//os << quickSortTime.QuadPart << std::endl;
 
 		if (os.fail())
 		{
@@ -158,3 +200,9 @@ TEST(CompareTest, TimeAndEqualityTestOptimized)
 
 	os.close();
 }
+#pragma endregion GeneralTests
+
+
+
+
+

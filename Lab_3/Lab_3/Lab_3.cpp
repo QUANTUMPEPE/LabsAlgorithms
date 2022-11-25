@@ -15,15 +15,9 @@ int RandRange(int min, int max)
 	return dist(gen);
 }
 
-void timeTest(int testSize, int testStep, int testStart, int repeats)
-{
-
-	
-}
-
 int main()
 {
-	timeTest(512, 1, 1, 10000);
+	
 }
 
 
