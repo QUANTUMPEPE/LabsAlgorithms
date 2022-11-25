@@ -14,6 +14,8 @@ namespace Sorts
 template<typename T, typename Compare>
 inline void Sorts::quick(T* first, T* last, Compare comp, bool useInsertion)
 {
+	if(!first || !last) throw std::exception_ptr("Nullptr in args!");
+
 	T* firstPointer = first;
 	T* lastPointer = last;
 
@@ -60,7 +62,9 @@ inline void Sorts::quick(T* first, T* last, Compare comp, bool useInsertion)
 
 template<typename T, typename Compare>
 inline void Sorts::insertions(T* first, T* last, Compare comp)
-{
+{	
+	if (!first || !last) throw std::exception_ptr("Nullptr in args!");
+
 	if (first == last) return;
 	T temp;
 	T* j;
