@@ -123,6 +123,9 @@ TEST(CompareTest, PerformanceAndEqualityTest)
 	int stepSize = 4;
 	bool worstCase = false;
 
+	int* arrayA{ new int[testSize] };
+	int* arrayB{ new int[testSize] };
+
 	typedef std::chrono::high_resolution_clock Time;
 	typedef std::chrono::nanoseconds ns;
 	typedef std::chrono::duration<float> fsec;
@@ -141,10 +144,10 @@ TEST(CompareTest, PerformanceAndEqualityTest)
 		ns insertSortTime = std::chrono::nanoseconds(0);
 
 		std::cout << "Step = " << i << " in " << testSize << std::endl;
+		
 		for (int k = 0; k < repeats; ++k)
 		{
-			int* arrayA{ new int[i] };
-			int* arrayB{ new int[i] };
+			
 			for (int j = 0; j < i; ++j)
 			{
 				if (worstCase)
@@ -169,14 +172,12 @@ TEST(CompareTest, PerformanceAndEqualityTest)
 			endInsretTime = Time::now();
 
 			startQuickTime = Time::now();
-			Sorts::quick(arrayB, arrayB + i - 1, [](int a, int b) { return a < b; }, true);
+			Sorts::quick(arrayB, arrayB + i - 1, [](int a, int b) { return a < b; }, false);
 			endQuickTime = Time::now();
 
 			quickSortTime += (endQuickTime - startQuickTime);
 			insertSortTime += (endInsretTime - startInsretTime);
 
-			delete[] arrayA;
-			delete[] arrayB;
 		}
 
 		quickSortTime /= repeats;
@@ -197,6 +198,8 @@ TEST(CompareTest, PerformanceAndEqualityTest)
 			os.close();
 		}
 	}
+	delete[] arrayA;
+	delete[] arrayB;
 
 	os.close();
 }

@@ -1,10 +1,10 @@
 ﻿  test.cpp
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(43,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(43): message : while compiling class template member function 'int DynamicArray<std::string>::getCapcaity(void) const'
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(50,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(50): message : while compiling class template member function 'int DynamicArray<std::string>::getCapcaity(void) const'
 P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\DynamicArrayUnitTest\test.cpp(98): message : see reference to function template instantiation 'int DynamicArray<std::string>::getCapcaity(void) const' being compiled
 P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\DynamicArrayUnitTest\test.cpp(96): message : see reference to class template instantiation 'DynamicArray<std::string>' being compiled
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(120,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(114): message : while compiling class template member function 'int DynamicArray<int>::insert(const T &)'
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(132,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(126): message : while compiling class template member function 'int DynamicArray<int>::insert(const T &)'
           with
           [
               T=int
@@ -14,7 +14,7 @@ P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorith
           [
               T=int
           ]
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(159,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(158): message : while compiling class template member function 'int DynamicArray<int>::size(void) const'
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(171,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\Lab_2\DynamicArray.h(170): message : while compiling class template member function 'int DynamicArray<int>::size(void) const'
 P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\DynamicArrayUnitTest\test.cpp(8): message : see reference to function template instantiation 'int DynamicArray<int>::size(void) const' being compiled
   DynamicArrayUnitTest.vcxproj -> P:\Рабочий стол\Универ\ИТМО\Алгоритмы\LabsAlgorithms\Lab_2\x64\Debug\DynamicArrayUnitTest.exe

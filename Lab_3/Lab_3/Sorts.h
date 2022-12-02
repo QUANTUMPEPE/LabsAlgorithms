@@ -14,28 +14,29 @@ namespace Sorts
 template<typename T, typename Compare>
 inline void Sorts::quick(T* first, T* last, Compare comp, bool useInsertion)
 {
-	if(!first || !last) throw std::exception_ptr("Nullptr in args!");
+	if(!first || !last) throw std::exception("Nullptr in args!");
 
-	T* firstPointer = first;
-	T* lastPointer = last;
+	T* firstPtr = first;
+	T* lastPtr = last;
 
-	while (firstPointer < lastPointer) 
+	while (firstPtr < lastPtr) 
 	{	
-		if (useInsertion && lastPointer - firstPointer <= 64) 
+		if (useInsertion && lastPtr - firstPtr <= 64) 
 		{
-			insertions(firstPointer, lastPointer, comp);
+			insertions(firstPtr, lastPtr, comp);
 			return;
 		}
 		
-		T* midPointer = firstPointer + (lastPointer - firstPointer) / 2;
+		//Finding median
+		T* midPtr = firstPtr + (lastPtr - firstPtr) / 2;
+		if (comp(*midPtr, *firstPtr)) std::swap(*midPtr, *firstPtr);
+		if (comp(*lastPtr, *firstPtr)) std::swap(*lastPtr, *firstPtr);
+		if (comp(*lastPtr, *midPtr)) std::swap(*lastPtr, *midPtr);
 
-		if (comp(*midPointer, *firstPointer)) std::swap(*midPointer, *firstPointer);
-		if (comp(*lastPointer, *firstPointer)) std::swap(*lastPointer, *firstPointer);
-		if (comp(*lastPointer, *midPointer)) std::swap(*lastPointer, *midPointer);
-
-		T pivot = *midPointer;
-		T* i = firstPointer;
-		T* j = lastPointer;
+		//Partition
+		const T pivot = *midPtr;
+		T* i = firstPtr;
+		T* j = lastPtr;
 
 		while (true) 
 		{
@@ -47,15 +48,15 @@ inline void Sorts::quick(T* first, T* last, Compare comp, bool useInsertion)
 			j--;
 		}
 
-		if (lastPointer - j > j - firstPointer) 
+		if (lastPtr - j > j - firstPtr) 
 		{
-			quick(firstPointer, j, comp, useInsertion);
-			firstPointer = j + 1;
+			quick(firstPtr, j, comp, useInsertion);
+			firstPtr = j + 1;
 		}
 		else 
 		{
-			quick(j + 1, lastPointer, comp, useInsertion);
-			lastPointer = j;
+			quick(j + 1, lastPtr, comp, useInsertion);
+			lastPtr = j;
 		}
 	}
 }
@@ -63,7 +64,7 @@ inline void Sorts::quick(T* first, T* last, Compare comp, bool useInsertion)
 template<typename T, typename Compare>
 inline void Sorts::insertions(T* first, T* last, Compare comp)
 {	
-	if (!first || !last) throw std::exception_ptr("Nullptr in args!");
+	if (!first || !last) throw std::exception("Nullptr in args!");
 
 	if (first == last) return;
 	T temp;

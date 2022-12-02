@@ -8,7 +8,7 @@ public:
 	class Iterator
 	{
 	public:
-		Iterator(DynamicArray<T>* array, T* head, bool isReverced);
+		Iterator(DynamicArray<T>* array, T* head, bool isReversed);
 
 		const T& get() const;
 		void set(const T& value);
@@ -22,11 +22,18 @@ public:
 
 		T& operator* () { return *current_; }
 
-	private:
+	protected:
 		T* head_;
 		T* current_;
 		DynamicArray<T>* array_;
 		bool isReverced_;
+	};
+
+	class ConstIterator : public Iterator
+	{
+	public:
+		ConstIterator(DynamicArray<T>* array, T* head, bool isReversed) : Iterator(array, head, isReversed){}
+		void set (const T& value) = delete;
 	};
 
 public:
@@ -42,11 +49,16 @@ public:
 	int size() const;
 	int getCapcaity() const { return capacity_; }
 	Iterator iterator() { return Iterator(this, data_, false); }
+	Iterator cIterator() { return ConstIterator(this, data_, false); }
 	Iterator reverseIterator() { return Iterator(this, data_ + size_ - 1, true); }
+	Iterator cIeverseIterator() { return ConstIterator(this, data_ + size_ - 1, true); }
+
+	void swap(DynamicArray& other);
 
 	const T& operator[](int index) const;
 	T& operator[](int index);
-	DynamicArray<T>& operator = (DynamicArray& other);
+	DynamicArray<T>& operator = (DynamicArray other);
+	//DynamicArray<T>& operator = (DynamicArray& other);
 	DynamicArray<T>& operator = (DynamicArray&& other) noexcept;
 
 private:
@@ -87,7 +99,6 @@ inline DynamicArray<T>::DynamicArray(DynamicArray& other)
 		new (data_ + i) T(other.data_[i]);
 }
 
-// Should other be usable after move?
 template<typename T>
 inline DynamicArray<T>::DynamicArray(DynamicArray&& other) noexcept
 {
@@ -104,10 +115,11 @@ inline DynamicArray<T>::DynamicArray(DynamicArray&& other) noexcept
 template <typename T>
 DynamicArray<T>::~DynamicArray()
 {
-	for(size_t i = 0; i < size_; i++) { data_[i].~T(); }
+	for(size_t i = 0; i < size_; ++i) { data_[i].~T(); }
 	free(data_);
 }
 #pragma endregion Constructors
+
 #pragma region PublicFunctions
 template<typename T>
 inline int DynamicArray<T>::insert(const T& value)
@@ -158,7 +170,17 @@ inline int DynamicArray<T>::size() const
 {
 	return size_;
 }
+
+template<typename T>
+inline void DynamicArray<T>::swap(DynamicArray& other)
+{
+	std::swap(data_, other.data_);
+	std::swap(size_, other.size_);
+	std::swap(capacity_, other.capacity_);
+}
+
 #pragma endregion PublicFunctions
+
 #pragma region PrivateFunctions
 template<typename T>
 inline void DynamicArray<T>::expand()
@@ -177,6 +199,7 @@ inline void DynamicArray<T>::expand()
 	newData = nullptr;
 }
 #pragma endregion PrivateFunctions
+
 #pragma region Operators
 template <typename T>
 inline T& DynamicArray<T>::operator[](int index)
@@ -185,6 +208,8 @@ inline T& DynamicArray<T>::operator[](int index)
 	return *(data_ + index);
 }
 
+
+
 template <typename T>
 inline const T& DynamicArray<T>::operator[](int index) const
 {
@@ -192,18 +217,25 @@ inline const T& DynamicArray<T>::operator[](int index) const
 	return *(data_ + index);
 }
 
+//template<typename T>
+//inline DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray& other)
+//{
+//	for (size_t i = 0; i < size_; ++i) data_[i].~T();
+//	free(data_);
+//
+//	size_ = other.size_;
+//	capacity_ = other.capacity_;
+//	data_ = (T*)malloc(size_ * sizeof(T));
+//	for (size_t i = 0; i < size_; ++i)
+//		new (data_ + i) T(other.data_[i]);
+//
+//	return *this;
+//}
+
 template<typename T>
-inline DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray& other)
+inline DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray other)
 {
-	for (size_t i = 0; i < size_; ++i) data_[i].~T();
-	free(data_);
-
-	size_ = other.size_;
-	capacity_ = other.capacity_;
-	data_ = (T*)malloc(size_ * sizeof(T));
-	for (size_t i = 0; i < size_; ++i)
-		new (data_ + i) T(other.data_[i]);
-
+	swap(other);
 	return *this;
 }
 
@@ -227,7 +259,6 @@ inline DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray&& other) noexcep
 #pragma endregion Operators
 
 #pragma region Iterator
-
 #pragma region ItConstructors
 template<typename T>
 inline DynamicArray<T>::Iterator::Iterator(DynamicArray<T>* array, T* head, bool isReverced) :
@@ -235,6 +266,7 @@ inline DynamicArray<T>::Iterator::Iterator(DynamicArray<T>* array, T* head, bool
 {
 }
 #pragma endregion ItConstructors
+
 #pragma region ItPublicFunctions
 template<typename T>
 inline const T& DynamicArray<T>::Iterator::get() const
@@ -261,19 +293,15 @@ inline bool DynamicArray<T>::Iterator::hasNext() const
 	if(isReverced_)
 	{
 		if(current_ == head_ - array_->size())	return false;
-		else									return true;
+		return true;
 	}
 	else
 	{
 		if(current_ == array_->size() + head_)	return false;
-		else									return true;
+		return true;
 	}
 }
 #pragma endregion ItPublicFunctions
-#pragma region ItOperators
-
-#pragma endregion ItOperators
-
 #pragma endregion Iterator
 
 
